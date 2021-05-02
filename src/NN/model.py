@@ -21,7 +21,19 @@ model.fit(data_file['x_train'], data_file['y_train'], epochs=5, batch_size=batch
 model.save('covidTO.h5')
 # model = keras.models.load_model('covidTO.h5')
 
+model2 = Sequential()
+model2.add(layers.Conv2D(140, input_shape=(45, 45, 13), kernel_size=(3,3), activation='relu'))
+model2.add(layers.Flatten())
+model2.add(layers.Dense(250, activation='relu'))
+model2.add(layers.Dense(140, activation='relu'))
+model2.compile('adam', 'mean_squared_error')
+
+model2.fit(data_file['x_train'], data_file['outbreak_train'], epochs=5, batch_size=batch_size)
+
+model2.save('covidTO_outbreaks.h5')
+
 # Accuracy Percision and Recall
+
 
 predicts = model.predict(data_file['x_test'])
 
@@ -39,12 +51,11 @@ nh_acc = {nh:np.mean(nh_acc[nh]) for nh in range(140)}
 
 print('Average accuracy = {}'.format(np.mean(list(nh_acc.values()))))
 
-model.fit(data_file['x_train'], data_file['outbreak_train'], epochs=5, batch_size=batch_size)
+outbreak_predicts = model2.predict(data_file['x_test'])
 
-model.save('covidTO_outbreaks.h5')
     
 outbreak_acc = {nh:{'fp':0, 'fn':0, 'tp':0} for nh in range(140)}
-for x, y in zip(predicts, data_file['outbreak_test']):
+for x, y in zip(outbreak_predicts, data_file['outbreak_test']):
     for i in range(140):
         if x[i] > 0 and y[i] > 0 or x[i] == 0 and y[i] == 0:
             nh_acc[i]['tp'] += 1
