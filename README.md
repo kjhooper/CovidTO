@@ -6,6 +6,13 @@ This a web app backed by Flask and hosted on Firebase with custom domain name cu
 
 Predict the counts of each Toronto neighbourhood and which neighbourhoods are expected to have outbreaks a day to days in advance.
 
+## To Use:
+
+1. Download datasets from section Data Collection save in src/NN
+2. Ensure the Toronto Covid Data is sorted Oldest to Newest by Episode Date
+3. Download requirements.txt
+4. run runfile.py in src/NN
+
 ## Approach
 ### Data Collection
 Data was collected from publicaaly available souces listed below.
