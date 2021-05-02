@@ -1,0 +1,11 @@
+.github/
+.vscode/
+public/
+covidTOPredicts/
+*.csv
+*.geojson
+ideas.txt
+*.p
+*.npz
+*.h5
+*.npy

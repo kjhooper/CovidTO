@@ -1,0 +1,6 @@
+tensorflow
+numpy
+geopandas
+pandas
+datetime
+scikitlearn
