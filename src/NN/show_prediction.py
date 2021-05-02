@@ -5,7 +5,6 @@ import geopandas as gpd
 import matplotlib.pyplot as plt
 from shapely.geometry.polygon import Polygon
 from shapely.geometry import Point
-import numpy as np
 import math
 
 
@@ -27,8 +26,9 @@ def build_history(date):
 
     index = LAST_DATE_RECORED - date
     index = index.days
-    if index > 0
-        try:
+    
+    try:
+        if index > 0:
             days = []
             for i in range(4):
                 day_input = np.zeros((3, 45,45))
@@ -44,21 +44,36 @@ def build_history(date):
 
             output_counts = model_counts.predict(data)
             output_outbreaks = model_outbreaks.predicts(data)
-    elif index == 0:
-        output_counts = model_counts.predict(datafile['x'])
-        output_outbreaks = model_outbreaks.predict(datafile['x'])
-    else:
-        hsitory = datafile['x']
-        y = [math.ceil(x) for x in model_counts.predict(history)]
-        output_outbreaks = outbreaks = [math.ceil(x) for x in model_outbreaks.predict(history)]
-        for i in range(abs(index)-1):
-            day_input = np.zeros((3, 45,45))
+        elif index == 0:
+            output_counts = model_counts.predict(datafile['x'])
+            output_outbreaks = model_outbreaks.predict(datafile['x'])
+        else:
+            hsitory = datafile['x']
+            y = [math.ceil(x) for x in model_counts.predict(history)]
+            output_outbreaks = outbreaks = [math.ceil(x) for x in model_outbreaks.predict(history)]
+            for i in range(abs(index)-1):
+                day_input = np.zeros((3, 45,45))
                 for nh in range(1, 141):
                     for x, y in zip(map_indicies[nh][0], map_indicies[nh][1]):
                         day_input[0][x, y] = datafile['y'][-index-i][nh-1]
                         day_input[1][x, y] += datafile['outbreaks'][-index-i][nh-1]
                     day_input[2] += (curr_date.isocalendar().week-1)/51
                     history = np.concatenate((day_input, history[:-3]))
+
+            output_counts = model_counts.predict(history)
+            output_outbreaks = model_outbreaks.predicts(history)
+            
     except:
         print('something went wrong')
+    return (output_counts, output_outbreaks)
 
+
+
+print("What date would you like to see?")
+year = int(input("year: 2020 or 2021? "))
+month = int(input("month (1-12) "))
+day = int(input("day (1-31) "))
+
+date = dt.date(year, month, day)
+
+counts, outbreaks = build_history(date)
