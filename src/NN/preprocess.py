@@ -26,7 +26,7 @@ def build_data_files(filename):
     counts = {n:0 for n in range(1, 141)}
     outbreaks = {n:0 for n in range(1, 141)}
     active = {}
-    curr_date = dt.date.fromisoformat(pd.read_csv('COVID19_cases.csv', usecols=['Episode Date'], nrows=1)['Episode Date'][0])
+    curr_date = dt.date.fromisoformat(pd.read_csv(filename, usecols=['Episode Date'], nrows=1)['Episode Date'][0])
     hist_count = 0
     history = np.zeros((12, 45, 45))
     make_inputs = False
@@ -120,4 +120,4 @@ def build_data_files(filename):
 
 if __name__ == '__main__':
     # sort_data('COVID19_cases.csv')
-    build_data_files('COVID19_cases.csv')
+    build_data_files('COVID19 cases.csv')
