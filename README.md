@@ -17,6 +17,13 @@ Data was collected from publicaaly available souces listed below.
     * [https://open.toronto.ca/dataset/covid-19-cases-in-toronto/](https://open.toronto.ca/dataset/covid-19-cases-in-toronto/)
     
 ### Build Model - Neuarl Network
+##### Assumptions:
+1. data without a valid neighbourhood name was not considered
+2. we assumed the case remained in the neighbourhood for 2 weeks 
+3. if the result was fatal or the person was was ever hospitalized we assumed it lasted 1 week.
+
+*These assumptions were made based on data of the contageous period of covid as well as if a person is in hospital or no longer alive then they cannot infect their neighbourhood this data was gathered from [CBC Covid progression](# https://www.cbc.ca/news/health/typical-covid-19-progression-1.5546949 approx 7 days after symptoms you get hospitalized]*
+
 Using tactics from the set up of open source chess engines Leela and Maia, the data was created in "map" form to preserve spatial relations between neighbourhoods.
 
 A map is of shape 3x45x45 with channels as follows:
