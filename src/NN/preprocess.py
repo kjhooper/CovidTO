@@ -46,8 +46,8 @@ def build_data_files(filename):
                 print(nh_name)
             
 
-            # ep_date = dt.date.fromisoformat(row['Episode Date'].iloc[0])
-            ep_date = row['Episode Date'].iloc[0]
+            ep_date = dt.date.fromisoformat(row['Episode Date'].iloc[0])
+            # ep_date = row['Episode Date'].iloc[0]
             counts[code_dict[nh_name]] += 1
 
 
@@ -119,5 +119,5 @@ def build_data_files(filename):
     np.savez_compressed(open('split_data.npz', 'wb'), x_train=x_train, y_train=y_train, x_test=x_test, y_test=y_test, outbreak_train=outbreak_train, outbreak_test=outbreak_test)
 
 if __name__ == '__main__':
-    sort_data('COVID19_cases.csv')
+    # sort_data('COVID19_cases.csv')
     build_data_files('COVID19_cases.csv')
