@@ -1,11 +1,12 @@
+import geopandas as gpd
 import numpy as np
 import datetime as dt
 from tensorflow import keras
-import geopandas as gpd
 import matplotlib.pyplot as plt
 from shapely.geometry.polygon import Polygon
 from shapely.geometry import Point
 import math
+import pickle
 
 
 datafile = np.load(open('last_day.npz', 'rb'))
@@ -20,9 +21,9 @@ def build_history(date):
     ones_map = np.load(open('ones_template.npy', 'rb')).reshape((1, 45, 45))
 
     model_counts = keras.models.load_model('covidTO.h5')
-    model_outbreaks = keras.models.load_model('covidTO.h5')
+    model_outbreaks = keras.models.load_model('covidTO_outbreaks.h5')
 
-    neighbourhoods = gpd.read_file('Neighbourhoods.geojson')
+    # neighbourhoods = gpd.read_file('Neighbourhoods.geojson')
 
     index = LAST_DATE_RECORED - date
     index = index.days
@@ -77,3 +78,14 @@ day = int(input("day (1-31) "))
 date = dt.date(year, month, day)
 
 counts, outbreaks = build_history(date)
+
+map_outbreaks = np.zeros((45,45))
+for nh in range(1, 141):
+    for x, y in zip(map_indicies[nh][0], map_indicies[nh][1]):
+        map_outbreaks[0][x, y] = outbreaks[nh-1]
+
+plt.imshow(np.rot90(map_outbreaks), extent=[min_x, max_x, min_y, max_y], origin='lower')
+for place in neighbourhoods['geometry']:
+    x, y = place.exterior.xy
+    plt.plot(x, y, 'k')
+plt.show()
