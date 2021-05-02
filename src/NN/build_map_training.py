@@ -32,7 +32,7 @@ for place in neighbourhoods['geometry'][1:]:
 x_pts = np.linspace(min_x, max_x, img_size)
 y_pts = np.linspace(min_y, max_y, img_size)
 
-# # X, Y = np.meshgrid(x_pts, y_pts)
+X, Y = np.meshgrid(x_pts, y_pts)
 
 # # plt.plot(x_pts, y_pts, 'o')
 # # for place in neighbourhoods['geometry']:
@@ -48,7 +48,7 @@ for i in range(140):
     name = neighbourhoods["AREA_NAME"].iloc[i].split(' (')[0]
     neighbourhood_codes[name] = neighbourhoods["AREA_SHORT_CODE"].iloc[i]
 
-pickle.dump(neighbourhood_codes, open('n_codes.p', 'wb'))
+# pickle.dump(neighbourhood_codes, open('n_codes.p', 'wb'))
 
 # for i in range(45):
 #     for j in range(45):
@@ -68,11 +68,11 @@ pickle.dump(neighbourhood_codes, open('n_codes.p', 'wb'))
 # np.save(open('map_template.npy', 'wb'), neighbourhood_arr)
 
 # # plt.imshow(neighbourhood_arr, extent=[min_x, max_x, min_y, max_y], origin='lower')
-# # # plt.plot(X, Y, 'o')
-# # for place in neighbourhoods['geometry']:
-# #     x, y = place.exterior.xy
-# #     plt.plot(x, y)
-# # plt.show()
+plt.plot(X, Y, 'ro')
+for place in neighbourhoods['geometry']:
+    x, y = place.exterior.xy
+    plt.plot(x, y, 'k')
+plt.show()
 
 # print(np.load(open('map_template.npy', 'rb')))
 # print(pickle.load(open('n_codes.p', 'rb')))
