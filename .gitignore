@@ -1,7 +1,7 @@
+node_modules/
+.firebase
 .github/
 .vscode/
-public/
-covidTOPredicts/
 *.csv
 *.geojson
 ideas.txt
@@ -9,3 +9,4 @@ ideas.txt
 *.npz
 *.h5
 *.npy
+server/package-lock.json

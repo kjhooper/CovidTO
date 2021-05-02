@@ -3,7 +3,7 @@ from tensorflow import keras
 from keras.models import Sequential
 import keras.layers as layers
 
-data_file = np.load(open('split_data.npz', 'rb'))
+data_file = np.load(open('split_data_full.npz', 'rb'))
 
 batch_size = 10
 
@@ -18,15 +18,33 @@ print(model.summary())
 
 model.fit(data_file['x_train'], data_file['y_train'], epochs=5, batch_size=batch_size)
 
-model.save('covidTO_weights_140.h5')
-# model = keras.models.load_model('covidTO_weights_140.h5')
+model.save('covidTO.h5')
+# model = keras.models.load_model('covidTO.h5')
 
-# Percision and Recall
+# Accuracy Percision and Recall
+
 predicts = model.predict(data_file['x_test'])
 
-nh_acc = {nh:{'fp':0, 'fn':0, 'tp':0} for nh in range(140)}
+nh_acc = {nh:[] for nh in range(140)}
 
 for x, y in zip(predicts, data_file['y_test']):
+    for i in range(140):
+        if y[i] == 0:
+            if x[i] == 0:
+                nh_acc[i].append(0)
+        else:
+            nh_acc[i].append(abs((x[i]-y[i])/y[i]))
+
+nh_acc = {nh:np.mean(nh_acc[nh]) for nh in range(140)}
+
+print('Average accuracy = {}'.format(np.mean(list(nh_acc.values()))))
+
+model.fit(data_file['x_train'], data_file['outbreak_train'], epochs=5, batch_size=batch_size)
+
+model.save('covidTO_outbreaks.h5')
+    
+outbreak_acc = {nh:{'fp':0, 'fn':0, 'tp':0} for nh in range(140)}
+for x, y in zip(predicts, data_file['outbreak_test']):
     for i in range(140):
         if x[i] > 0 and y[i] > 0 or x[i] == 0 and y[i] == 0:
             nh_acc[i]['tp'] += 1

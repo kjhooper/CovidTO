@@ -29,6 +29,7 @@ ones_map = np.load(open('ones_template.npy', 'rb')).reshape((1, 45, 45))
 
 x_data = []
 y_data = []
+outbreak_data = []
 
 cols = ['Assigned_ID', 'Outbreak Associated', 'Neighbourhood Name', 'Episode Date', 'Outcome', 'Ever Hospitalized']
 
@@ -79,7 +80,7 @@ for row in pd.read_csv('COVID19_cases.csv', usecols=cols, chunksize=1):
                 counts[key] -= active[ep_date][key]
             active.pop(ep_date)
         if row['Outbreak Associated'].iloc[0] == 'Outbreak Associated':
-            counts[code_dict[nh_name]] = 1
+            outbreaks[code_dict[nh_name]] = 1
 
         
         if curr_date != dt.date.fromisoformat(row['Episode Date'].iloc[0]):
@@ -90,9 +91,14 @@ for row in pd.read_csv('COVID19_cases.csv', usecols=cols, chunksize=1):
                 # print(np.shape(np.concatenate((history, ones_map))))
                 if make_outputs:
                     output = list(counts.items())
+                    outbreak_out = list(outbreaks.items())
                     output.sort()
+                    outbreak_out.sort()
                     output = np.array([item[1] for item in output])
+                    outbreak_out = np.array([item[1] for item in outbreak_out])
                     y_data.append(output)
+                    outbreak_data.append(outbreak_out)
+
                     # print(np.shape(output)
             elif not make_inputs and hist_count == 4:
                 make_inputs = True
@@ -106,7 +112,7 @@ for row in pd.read_csv('COVID19_cases.csv', usecols=cols, chunksize=1):
                 for x, y in zip(map_indicies[key][0], map_indicies[key][1]):
                     day_input[0][x, y] = counts[key]
 
-                day_input[1] += outbreaks[key]
+                day_input[1][x, y] += outbreaks[key]
                 day_input[2] += (curr_date.isocalendar().week-1)/51
             
             history = np.concatenate((day_input, history[:-3]))
@@ -117,6 +123,6 @@ for row in pd.read_csv('COVID19_cases.csv', usecols=cols, chunksize=1):
         pass
 
 # x_train, x_test, y_train, y_test = train_test_split(data['x'], data['y'], shuffle=False)
-x_train, x_test, y_train, y_test = train_test_split(x_data, y_data, shuffle=False)
+x_train, x_test, y_train, y_test, outbreak_train, outbreak_test = train_test_split(x_data, y_data, outbreak_data, shuffle=False)
 
-np.savez_compressed(open('split_data.npz', 'wb'), x_train=x_train, y_train=y_train, x_test=x_test, y_test=y_test)
+np.savez_compressed(open('split_data_full.npz', 'wb'), x_train=x_train, y_train=y_train, x_test=x_test, y_test=y_test, outbreak_train=outbreak_train, outbreak_test=outbreak_test)
