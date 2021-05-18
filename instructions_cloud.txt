@@ -1,0 +1,4 @@
+gcloud builds submit --tag gcr.io/covidto-predicts/web-map
+gcloud run deploy --image gcr.io/covidto-predicts/web-map
+
+node_modules/.bin/firebase serve
