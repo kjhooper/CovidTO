@@ -8,16 +8,16 @@ import os
 
 app = Flask(__name__)
 
-# def build_plot():
-#     x = np.arange(0, 10, 1)
-#     plt.plot(x, x)
-#     url = "/line.png"
-#     plt.savefig(url)
-#     return url
+def build_plot():
+    x = np.arange(0, 10, 1)
+    plt.plot(x, x)
+    url = "static/images/line.png"
+    plt.savefig(url)
+    return url
 
 @app.route('/')
 def index():
-    context = {'name':'line'}#, 'url':build_plot()}
+    context = {'name':'line', 'url':build_plot()}
     return render_template('index.html', context=context)
 
 if __name__ == '__main__':

@@ -6,40 +6,42 @@ import keras.layers as layers
 def build_models():
     data_file = np.load(open('split_data.npz', 'rb'))
 
-    batch_size = 10
+    # batch_size = 10
 
-    model = Sequential()
-    model.add(layers.Conv2D(140, input_shape=(45, 45, 13), kernel_size=(3,3), activation='relu'))
-    model.add(layers.Flatten())
-    model.add(layers.Dense(250, activation='relu'))
-    model.add(layers.Dense(140, activation='relu'))
-    model.compile('adam', 'mean_squared_error')
+    # model = Sequential()
+    # model.add(layers.Conv2D(140, input_shape=(45, 45, 13), kernel_size=(3,3), activation='relu'))
+    # model.add(layers.Flatten())
+    # model.add(layers.Dense(250, activation='relu'))
+    # model.add(layers.Dense(140, activation='relu'))
+    # model.compile('adam', 'mean_squared_error')
 
-    print('Model Summary')
-    print(model.summary())
+    # print('Model Summary')
+    # print(model.summary())
 
-    print('Training Covid Case Count Model')
-    model.fit(data_file['x_train'], data_file['y_train'], epochs=5, batch_size=batch_size)
+    # print('Training Covid Case Count Model')
+    # model.fit(data_file['x_train'], data_file['y_train'], epochs=5, batch_size=batch_size)
 
-    # model.save('covidTO.h5')
-
-
-    model2 = Sequential()
-    model2.add(layers.Conv2D(140, input_shape=(45, 45, 13), kernel_size=(3,3), activation='relu'))
-    model2.add(layers.Flatten())
-    model2.add(layers.Dense(250, activation='relu'))
-    model2.add(layers.Dense(140, activation='relu'))
-    model2.compile('adam', 'mean_squared_error')
+    # # model.save('covidTO.h5')
 
 
-    print('Training Covid Outbreaks Model')
-    model2.fit(data_file['x_train'], data_file['outbreak_train'], epochs=5, batch_size=batch_size)
+# i think i have to reformat the inputs here
 
-    model2.save('covidTO_outbreaks.h5')
+    # model2 = Sequential()
+    # model2.add(layers.Conv2D(140, input_shape=(45, 45, 13), kernel_size=(3,3), activation='relu'))
+    # model2.add(layers.Flatten())
+    # model2.add(layers.Dense(250, activation='relu'))
+    # model2.add(layers.Dense(140, activation='relu'))
+    # model2.compile('adam', 'mean_squared_error')
+
+
+    # print('Training Covid Outbreaks Model')
+    # model2.fit(data_file['x_train'], data_file['outbreak_train'], epochs=5, batch_size=batch_size)
+
+    # model2.save('covidTO_outbreaks.h5')
 
     # Accuracy Percision and Recall Analysis
-    # model = keras.models.load_model('covidTO.h5')
-    # model2 = keras.models.load_model('covidTO.h5')
+    model = keras.models.load_model('covidTO.h5')
+    model2 = keras.models.load_model('covidTO_outbreaks.h5')
 
     predicts = model.predict(data_file['x_test'])
 
@@ -58,7 +60,7 @@ def build_models():
 
     nh_acc = {nh:np.mean(nh_acc[nh]) for nh in range(140)}
 
-    print('Average accuracy = {}'.format(np.mean(list(nh_acc.values()))))
+    print('Average deviation = {}'.format(np.mean(list(nh_acc.values()))))
 
     outbreak_predicts = model2.predict(data_file['x_test'])
 
@@ -66,7 +68,7 @@ def build_models():
     outbreak_acc = {nh:{'fp':0, 'fn':0, 'tp':0} for nh in range(140)}
     for x, y in zip(outbreak_predicts, data_file['outbreak_test']):
         for i in range(140):
-            if x[i] > 0 and y[i] > 0 or x[i] == 0 and y[i] == 0:
+            if x[i] > 0 and y[i] > 0:
                 outbreak_acc[i]['tp'] += 1
             elif x[i] <= 0 and y[i] > 0:
                 outbreak_acc[i]['fn'] += 1
@@ -89,5 +91,8 @@ def build_models():
 
     print('average percision: {}   average recall {}'.format(np.mean(percision), np.mean(recall)))
 
+
+if __name__ == "__main__":
+    build_models()
 
 

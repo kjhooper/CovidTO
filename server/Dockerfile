@@ -1,6 +1,6 @@
 FROM python:3.7
 
-RUN pip install Flask gunicorn matplotlib numpy tensorflow
+RUN pip install Flask gunicorn matplotlib numpy
 
 COPY src/ app/
 WORKDIR /app
