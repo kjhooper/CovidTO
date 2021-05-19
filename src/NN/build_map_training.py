@@ -34,55 +34,58 @@ def build_extras():
 
     X, Y = np.meshgrid(x_pts, y_pts)
 
-    # # plt.plot(x_pts, y_pts, 'o')
+    # plt.plot(x_pts, y_pts, 'o')
+    for place in neighbourhoods['geometry']:
+        x, y = place.exterior.xy
+        plt.plot(x, y)
+    plt.show()
+
+    # neighbourhood_arr = np.zeros((img_size, img_size))
+    # ones_arr = np.zeros((img_size, img_size))
+    # neighbourhood_codes = {}
+
+    # for i in range(140):
+    #     name = neighbourhoods["AREA_NAME"].iloc[i].split(' (')[0]
+    #     neighbourhood_codes[name] = neighbourhoods["AREA_SHORT_CODE"].iloc[i]
+
+    # pickle.dump(neighbourhood_codes, open('n_codes.p', 'wb'))
+
+    # for i in range(45):
+    #     for j in range(45):
+    #         point = Point(x_pts[i], y_pts[::-1][j])
+    #         for loc in range(140):
+    #             if neighbourhoods['geometry'].iloc[loc].contains(point):
+    #                 neighbourhood_arr[i, j] += neighbourhoods['AREA_SHORT_CODE'].iloc[loc]
+    #                 ones_arr[i, j] += 1
+    #                 break
+    # # print(neighbourhood_arr)
+
+    # ones_arr = np.rot90(ones_arr)
+
+    # np.save(open('ones_template.npy', 'wb'), ones_arr)
+    # neighbourhood_arr = np.rot90(neighbourhood_arr)
+
+    # np.save(open('map_template.npy', 'wb'), neighbourhood_arr)
+
+    # # # # plt.imshow(neighbourhood_arr, extent=[min_x, max_x, min_y, max_y], origin='lower')
+    # # plt.plot(X, Y, 'ro')
     # # for place in neighbourhoods['geometry']:
     # #     x, y = place.exterior.xy
-    # #     plt.plot(x, y)
+    # #     plt.plot(x, y, 'k')
     # # plt.show()
 
-    neighbourhood_arr = np.zeros((img_size, img_size))
-    ones_arr = np.zeros((img_size, img_size))
-    neighbourhood_codes = {}
+    # # print(np.load(open('map_template.npy', 'rb')))
+    # # print(pickle.load(open('n_codes.p', 'rb')))
 
-    for i in range(140):
-        name = neighbourhoods["AREA_NAME"].iloc[i].split(' (')[0]
-        neighbourhood_codes[name] = neighbourhoods["AREA_SHORT_CODE"].iloc[i]
+    # # maps = np.load(open('map_template.npy', 'rb'))
+    # # d = pickle.load(open('n_codes.p', 'rb'))
 
-    pickle.dump(neighbourhood_codes, open('n_codes.p', 'wb'))
+    # # index_dict = {}
 
-    for i in range(45):
-        for j in range(45):
-            point = Point(x_pts[i], y_pts[::-1][j])
-            for loc in range(140):
-                if neighbourhoods['geometry'].iloc[loc].contains(point):
-                    neighbourhood_arr[i, j] += neighbourhoods['AREA_SHORT_CODE'].iloc[loc]
-                    ones_arr[i, j] += 1
-                    break
-    # print(neighbourhood_arr)
+    # # for i in range(1, 141):
+    # #     indicies = np.where(maps==i)
+    # #     index_dict[i] = [indicies[0], indicies[1]]
+    # # pickle.dump(index_dict, open('map_indicies.p', 'wb'))
 
-    ones_arr = np.rot90(ones_arr)
-
-    np.save(open('ones_template.npy', 'wb'), ones_arr)
-    neighbourhood_arr = np.rot90(neighbourhood_arr)
-
-    np.save(open('map_template.npy', 'wb'), neighbourhood_arr)
-
-    # # # plt.imshow(neighbourhood_arr, extent=[min_x, max_x, min_y, max_y], origin='lower')
-    # plt.plot(X, Y, 'ro')
-    # for place in neighbourhoods['geometry']:
-    #     x, y = place.exterior.xy
-    #     plt.plot(x, y, 'k')
-    # plt.show()
-
-    # print(np.load(open('map_template.npy', 'rb')))
-    # print(pickle.load(open('n_codes.p', 'rb')))
-
-    # maps = np.load(open('map_template.npy', 'rb'))
-    # d = pickle.load(open('n_codes.p', 'rb'))
-
-    # index_dict = {}
-
-    # for i in range(1, 141):
-    #     indicies = np.where(maps==i)
-    #     index_dict[i] = [indicies[0], indicies[1]]
-    # pickle.dump(index_dict, open('map_indicies.p', 'wb'))
+if __name__ == '__main__':
+    build_extras()
