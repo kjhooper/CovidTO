@@ -8,12 +8,12 @@ import os
 
 app = Flask(__name__)
 
-def build_plot():
-    x = np.arange(0, 10, 1)
-    plt.plot(x, x)
-    url = "../../static/images/line.png"
-    plt.savefig(url)
-    return url
+# def build_plot():
+#     x = np.arange(0, 10, 1)
+#     plt.plot(x, x)
+#     url = "../../static/images/line.png"
+#     plt.savefig(url)
+#     return url
 
 @app.route('/')
 def index():
