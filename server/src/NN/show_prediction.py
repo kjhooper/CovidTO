@@ -9,11 +9,14 @@ import math
 import pickle
 
 
-datafile = np.load(open('last_day.npz', 'rb'))
+# datafile = np.load(open('./last_day.npz', 'rb'))
 
-LAST_DATE_RECORED = dt.date(datafile['last_date'][0], datafile['last_date'][1], datafile['last_date'][2])
+# LAST_DATE_RECORED = dt.date(datafile['last_date'][0], datafile['last_date'][1], datafile['last_date'][2])
 
 def build_history(date):
+    datafile = np.load(open('./last_day.npz', 'rb'))
+
+    LAST_DATE_RECORED = dt.date(datafile['last_date'][0], datafile['last_date'][1], datafile['last_date'][2])
     template = np.load(open('map_template.npy', 'rb'))
     code_dict = pickle.load(open('n_codes.p', 'rb'))
     conversion_dict = {'Mimico (includes Humber Bay Shores)': 'Mimico', 'Danforth-East York':'Danforth East York', 'Cabbagetown-South St. James Town':'Cabbagetown-South St.James Town', 'North St. James Town':'North St.James Town', 'Briar Hill - Belgravia':'Briar Hill-Belgravia'}
@@ -70,22 +73,22 @@ def build_history(date):
 
 
 
-print("What date would you like to see?")
-year = int(input("year: 2020 or 2021? "))
-month = int(input("month (1-12) "))
-day = int(input("day (1-31) "))
+# print("What date would you like to see?")
+# year = int(input("year: 2020 or 2021? "))
+# month = int(input("month (1-12) "))
+# day = int(input("day (1-31) "))
 
-date = dt.date(year, month, day)
+# date = dt.date(year, month, day)
 
-counts, outbreaks = build_history(date)
+# counts, outbreaks = build_history(date)
 
-map_outbreaks = np.zeros((45,45))
-for nh in range(1, 141):
-    for x, y in zip(map_indicies[nh][0], map_indicies[nh][1]):
-        map_outbreaks[0][x, y] = outbreaks[nh-1]
+# map_outbreaks = np.zeros((45,45))
+# for nh in range(1, 141):
+#     for x, y in zip(map_indicies[nh][0], map_indicies[nh][1]):
+#         map_outbreaks[0][x, y] = outbreaks[nh-1]
 
-plt.imshow(np.rot90(map_outbreaks), extent=[min_x, max_x, min_y, max_y], origin='lower')
-for place in neighbourhoods['geometry']:
-    x, y = place.exterior.xy
-    plt.plot(x, y, 'k')
-plt.show()
+# plt.imshow(np.rot90(map_outbreaks), extent=[min_x, max_x, min_y, max_y], origin='lower')
+# for place in neighbourhoods['geometry']:
+#     x, y = place.exterior.xy
+#     plt.plot(x, y, 'k')
+# plt.show()

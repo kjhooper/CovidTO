@@ -9,7 +9,7 @@
         "rewrites": [{
             "source": "**", 
             "run": {
-                "serviceId": "web-map"
+                "serviceId": "counts-map"
             }
         }]
     }

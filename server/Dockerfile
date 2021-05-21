@@ -1,6 +1,8 @@
 FROM python:3.7
 
-RUN pip install Flask gunicorn matplotlib numpy
+RUN pip install --upgrade pip
+RUN pip install --upgrade setuptools
+RUN pip install Flask gunicorn mpld3 geopandas matplotlib tensorflow
 
 COPY src/ app/
 WORKDIR /app

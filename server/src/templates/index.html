@@ -7,10 +7,12 @@
     <title>covidTO</title>
     <link rel="stylesheet" href="/styles/basestyle.css">
 </head>
+
 <body>
-    <h1>covidTO</h1>
+    <h1 id=main_header>covidTO</h1>
     <h3>{{ context.name }}</h3>
-    <img src={{ context.url }}>
+    <!-- <img src={{ context.url }}> -->
+    {{ context.plot|safe }}
     
 </body>
 </html>

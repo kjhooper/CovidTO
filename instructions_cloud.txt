@@ -1,5 +1,5 @@
-gcloud builds submit --tag gcr.io/covidto-predicts/web-map
-gcloud run deploy --image gcr.io/covidto-predicts/web-map
+gcloud builds submit --tag gcr.io/covidto-predicts/counts-map
+gcloud run deploy --image gcr.io/covidto-predicts/counts-map --memory 4Gi               (choose new service name)
 node_modules/.bin/firebase serve
 
 #update site

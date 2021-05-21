@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 
+#main_header {
+  font-family: 'Great Vibes', cursive;
+}
+
 body {
     background-color: rgb(92, 212, 252);
-    font-family: 'Great Vibes', cursive;
   }
